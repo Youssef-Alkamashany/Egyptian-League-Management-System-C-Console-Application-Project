@@ -46,3 +46,11 @@ This is a comprehensive **League Management System** developed in C++. Unlike ba
     ├── Team Logic       # Add, Display, Search, Remove
     ├── Player Logic     # Add, Display, Search, Update, Remove
     └── Bonus Analytics  # Salary Sorting, Avg Age Sorting
+
+### 👤 Author & Contact
+**Youssef Alkamashany**
+* 🚀 **Aspiring MLOps & AI Data Engineer**.
+* 💼 **Team Leader** | Digital Egypt Pioneers Initiative (DEPI).
+
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/youssef-alkamashany-18261132b)
+[![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Youssef-Alkamashany)
