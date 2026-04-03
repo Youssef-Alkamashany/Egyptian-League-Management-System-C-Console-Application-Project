@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<!-- saved from url=(0195)https://ppl-ai-code-interpreter-files.s3.amazonaws.com/web/direct-files/7cd20bd5562cf663941ccce539f0139e/b56f268d-1e41-47d0-8dac-193d0723f3b5/78d76f11.html?rnd=1766426141997&utm_source=perplexity -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Egyptian League System (C++)</title>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:Segoe UI,Arial,sans-serif;background:linear-gradient(135deg,#020617,#0f172a);min-height:100vh;display:flex;justify-content:center;align-items:center;padding:20px}
+    .presentation{width:100%;max-width:900px}
+    .slide{background:radial-gradient(circle at top,#1e293b,#020617);border:2px solid #38bdf8;border-radius:16px;padding:50px 45px;margin-bottom:28px;color:#e5e7eb;box-shadow:0 16px 40px rgba(0,0,0,.6);page-break-after:always;min-height:600px;display:flex;flex-direction:column;justify-content:space-between}
+    .title-slide{text-align:center;background:linear-gradient(135deg,#0ea5e9,#020617)}
+    h1{font-size:2.8em;margin-bottom:10px;color:#e0f2fe}
+    h2{font-size:2.1em;margin-bottom:25px;color:#38bdf8;border-bottom:2px solid #38bdf8;padding-bottom:10px}
+    h3{font-size:1.45em;margin:18px 0 10px;color:#7dd3fc}
+    p,li{font-size:1.05em;line-height:1.7;color:#cbd5e1}
+    ul{margin-left:26px;margin-top:8px}
+    li{margin-bottom:8px}
+    .code-block{background:#020617;border-left:4px solid #38bdf8;padding:18px 18px 18px 22px;border-radius:8px;font-family:Consolas,monospace;font-size:.9em;overflow-x:auto;color:#e5e7eb;margin:14px 0}
+    .kw{color:#fbbf24;font-weight:bold}.tp{color:#34d399}.st{color:#f97373}.cm{color:#a5b4fc}
+    .step{background:rgba(56,189,248,.08);border-left:3px solid #38bdf8;padding:10px 14px;border-radius:6px;margin-top:10px}
+    .slide-number{text-align:right;font-size:.85em;color:#64748b;margin-top:25px;border-top:1px solid #1f2933;padding-top:10px}
+    @media print{body{background:#fff}.slide{break-after:page}}
+  </style>
+</head>
+<body>
+<div class="presentation">
+  <!-- Slide 1 -->
+  <section class="slide title-slide">
+    <div>
+      <h1>Egyptian League System</h1>
+      <h1>(C++ with Linked Lists)</h1>
+      <p style="font-size:1.3em;margin-top:20px;">Managing Teams and Players using Singly Linked Lists</p>
+    </div>
+    <div class="slide-number">Slide 1 / 9</div>
+  </section>
+  <!-- Slide 2 -->
+  <section class="slide">
+    <div>
+      <h2>Main Idea &amp; Features</h2>
+      <h3>Main Idea</h3>
+      <ul>
+        <li>Console-based system to manage football league data (teams and players).[web:41]</li>
+        <li>Uses <b>singly linked lists</b> instead of static arrays for dynamic storage.[web:39]</li>
+        <li>Each team is stored in a <b>TeamNode</b>, each player in a <b>PlayerNode</b>.</li>
+      </ul>
+      <h3>Key Features</h3>
+      <ul>
+        <li>Add / remove / display teams and players.[web:41]</li>
+        <li>Search team by ID, search player by name.</li>
+        <li>Update a player's team (transfer between clubs).</li>
+        <li>Sort players of a team by salary (descending order).[web:40]</li>
+        <li>Order teams by average age of their players.</li>
+      </ul>
+    </div>
+    <div class="slide-number">Slide 2 / 9</div>
+  </section>
+  <!-- Slide 3 -->
+  <section class="slide">
+    <div>
+      <h2>Data Structures</h2>
+      <h3>TeamNode (Team node)</h3>
+      <div class="code-block">
+<span class="kw">struct</span> <span class="tp">TeamNode</span> {
+    <span class="tp">int</span> id;            <span class="cm">// Team ID</span>
+    <span class="tp">string</span> name;       <span class="cm">// Team name</span>
+    <span class="tp">string</span> president;  <span class="cm">// Club president</span>
+    <span class="tp">TeamNode</span>* next;    <span class="cm">// Pointer to next team</span>
+};
+      </div>
+      <h3>PlayerNode (Player node)</h3>
+      <div class="code-block">
+<span class="kw">struct</span> <span class="tp">PlayerNode</span> {
+    <span class="tp">int</span> id;             <span class="cm">// Player ID</span>
+    <span class="tp">string</span> name;        <span class="cm">// Player name</span>
+    <span class="tp">string</span> teamName;    <span class="cm">// Team name</span>
+    <span class="tp">string</span> position;    <span class="cm">// Position (GK, RW, CM, ...)</span>
+    <span class="tp">int</span> age;            <span class="cm">// Age</span>
+    <span class="tp">double</span> salary;      <span class="cm">// Salary</span>
+    <span class="tp">PlayerNode</span>* next;   <span class="cm">// Pointer to next player</span>
+};
+      </div>
+      <div class="step">Each node stores the data plus a pointer to the next node, which is the classic structure of a singly linked list in C++.[web:39]</div>
+    </div>
+    <div class="slide-number">Slide 3 / 9</div>
+  </section>
+  <!-- Slide 4 -->
+  <section class="slide">
+    <div>
+      <h2>LeagueSystem Class</h2>
+      <h3>Class Design</h3>
+      <div class="code-block">
+<span class="kw">class</span> <span class="tp">LeagueSystem</span> {
+<span class="kw">private:</span>
+    <span class="tp">TeamNode</span>* teamHead;      <span class="cm">// Head of teams list</span>
+    <span class="tp">PlayerNode</span>* playerHead;  <span class="cm">// Head of players list</span>
+
+<span class="kw">public:</span>
+    LeagueSystem() {
+        teamHead = NULL;
+        playerHead = NULL;
+    }
+
+    <span class="cm">// Team operations</span>
+    <span class="kw">void</span> addTeam(<span class="tp">int</span>, <span class="tp">string</span>, <span class="tp">string</span>);
+    <span class="kw">void</span> displayTeams();
+    <span class="kw">void</span> searchTeamByID(<span class="tp">int</span>);
+    <span class="kw">void</span> removeTeam(<span class="tp">int</span>);
+
+    <span class="cm">// Player operations</span>
+    <span class="kw">void</span> addPlayer(<span class="tp">int</span>, <span class="tp">string</span>, <span class="tp">string</span>,
+                   <span class="tp">string</span>, <span class="tp">int</span>, <span class="tp">double</span>);
+    <span class="kw">void</span> displayPlayers();
+    <span class="kw">void</span> searchPlayerByName(<span class="tp">string</span>);
+    <span class="kw">void</span> removePlayer(<span class="tp">int</span>);
+    <span class="kw">void</span> updatePlayerTeam(<span class="tp">string</span>, <span class="tp">string</span>);
+
+    <span class="cm">// Bonus operations</span>
+    <span class="kw">void</span> displayPlayersBySalary(<span class="tp">string</span>);
+    <span class="tp">double</span> calculateAvgAge(<span class="tp">string</span>);
+    <span class="kw">void</span> displayTeamsByAvgAge();
+};
+      </div>
+      <div class="step">teamHead points to the first team, playerHead points to the first player; all operations traverse from these heads through the linked lists.[web:1][web:41]</div>
+    </div>
+    <div class="slide-number">Slide 4 / 9</div>
+  </section>
+  <!-- Slide 5 -->
+  <section class="slide">
+    <div>
+      <h2>Team Operations</h2>
+      <h3>Add Team – addTeam()</h3>
+      <div class="code-block">
+<span class="kw">void</span> addTeam(<span class="tp">int</span> id, <span class="tp">string</span> name, <span class="tp">string</span> president) {
+    <span class="tp">TeamNode</span>* newTeam = <span class="kw">new</span> <span class="tp">TeamNode</span>();
+    newTeam-&gt;id = id;
+    newTeam-&gt;name = name;
+    newTeam-&gt;president = president;
+    newTeam-&gt;next = NULL;
+
+    <span class="kw">if</span> (teamHead == NULL) {           <span class="cm">// first team</span>
+        teamHead = newTeam;
+    } <span class="kw">else</span> {
+        <span class="tp">TeamNode</span>* temp = teamHead;
+        <span class="kw">while</span> (temp-&gt;next != NULL)
+            temp = temp-&gt;next;        <span class="cm">// go to last node</span>
+        temp-&gt;next = newTeam;        <span class="cm">// link at the end</span>
+    }
+}
+      </div>
+      <h3>Display &amp; Search Teams</h3>
+      <div class="step">
+        <ul>
+          <li><b>displayTeams()</b>: traverses from teamHead to NULL and prints id, name, president of each team.[web:41]</li>
+          <li><b>searchTeamByID(int id)</b>: scans nodes until it finds a matching id, otherwise prints "Team not found".</li>
+        </ul>
+      </div>
+    </div>
+    <div class="slide-number">Slide 5 / 9</div>
+  </section>
+  <!-- Slide 6 -->
+  <section class="slide">
+    <div>
+      <h2>Player Operations</h2>
+      <h3>Add Player – addPlayer()</h3>
+      <div class="code-block">
+<span class="kw">void</span> addPlayer(<span class="tp">int</span> id, <span class="tp">string</span> name,
+               <span class="tp">string</span> tName, <span class="tp">string</span> pos,
+               <span class="tp">int</span> age, <span class="tp">double</span> sal) {
+    <span class="tp">PlayerNode</span>* newPlayer = <span class="kw">new</span> <span class="tp">PlayerNode</span>();
+    newPlayer-&gt;id = id;
+    newPlayer-&gt;name = name;
+    newPlayer-&gt;teamName = tName;
+    newPlayer-&gt;position = pos;
+    newPlayer-&gt;age = age;
+    newPlayer-&gt;salary = sal;
+    newPlayer-&gt;next = NULL;
+
+    <span class="kw">if</span> (playerHead == NULL)
+        playerHead = newPlayer;          <span class="cm">// first player</span>
+    <span class="kw">else</span> {
+        <span class="tp">PlayerNode</span>* temp = playerHead;
+        <span class="kw">while</span> (temp-&gt;next != NULL)
+            temp = temp-&gt;next;          <span class="cm">// go to last player</span>
+        temp-&gt;next = newPlayer;         <span class="cm">// link at the end</span>
+    }
+}
+      </div>
+      <h3>Remove Player – removePlayer(int id)</h3>
+      <div class="step">
+        <ul>
+          <li>If the player is at the head: move <b>playerHead</b> to <code>playerHead-&gt;next</code> and delete the first node.[web:41]</li>
+          <li>If the player is in the middle or end: find the previous node, then set <code>temp-&gt;next = temp-&gt;next-&gt;next;</code> and delete the removed node.</li>
+        </ul>
+      </div>
+      <h3>Display Players</h3>
+      <p><b>displayPlayers()</b> prints ID, name, team, position, age, and salary for every player in the list.</p>
+    </div>
+    <div class="slide-number">Slide 6 / 9</div>
+  </section>
+  <!-- Slide 7 -->
+  <section class="slide">
+    <div>
+      <h2>Search &amp; Update Players</h2>
+      <h3>Search by Name – searchPlayerByName()</h3>
+      <div class="step">
+        Traverses the players list from <b>playerHead</b> and compares <code>temp-&gt;name == name</code>.
+        Prints all players with that name and their teams, or a message if no player is found.[web:41]
+      </div>
+      <h3>Update Player Team – updatePlayerTeam()</h3>
+      <div class="code-block">
+<span class="kw">void</span> updatePlayerTeam(<span class="tp">string</span> playerName, <span class="tp">string</span> newTeamName) {
+    <span class="tp">PlayerNode</span>* temp = playerHead;
+    <span class="kw">while</span> (temp != NULL) {
+        <span class="kw">if</span> (temp-&gt;name == playerName) {
+            temp-&gt;teamName = newTeamName;  <span class="cm">// transfer player to new team</span>
+            <span class="kw">return</span>;
+        }
+        temp = temp-&gt;next;
+    }
+}
+      </div>
+      <div class="step">This function performs a linear search on the players list and then updates the teamName field of the found node.[web:41]</div>
+    </div>
+    <div class="slide-number">Slide 7 / 9</div>
+  </section>
+  <!-- Slide 8 -->
+  <section class="slide">
+    <div>
+      <h2>Bonus: Salary &amp; Age</h2>
+      <h3>Sort Players by Salary – displayPlayersBySalary()</h3>
+      <div class="step">
+        Uses a double loop over the players linked list (similar to Bubble Sort):
+        <ul>
+          <li>Two pointers i and j traverse the list.</li>
+          <li>If <code>i-&gt;salary &lt; j-&gt;salary</code>, it swaps all data fields between the two nodes (id, name, teamName, position, age, salary).[web:40]</li>
+          <li>After sorting, it prints only players whose teamName matches the selected team.</li>
+        </ul>
+      </div>
+      <h3>Average Age – calculateAvgAge()</h3>
+      <div class="code-block">
+<span class="tp">double</span> calculateAvgAge(<span class="tp">string</span> tName) {
+    <span class="tp">PlayerNode</span>* temp = playerHead;
+    <span class="tp">double</span> sum = 0;
+    <span class="tp">int</span> count = 0;
+    <span class="kw">while</span> (temp != NULL) {
+        <span class="kw">if</span> (temp-&gt;teamName == tName) {
+            sum += temp-&gt;age;
+            count++;
+        }
+        temp = temp-&gt;next;
+    }
+    <span class="kw">if</span> (count == 0) <span class="kw">return</span> 0;
+    <span class="kw">return</span> sum / count;   <span class="cm">// average age of this team</span>
+}
+      </div>
+      <h3>Teams by Average Age – displayTeamsByAvgAge()</h3>
+      <div class="step">
+        Uses nested loops over the teams list and <b>calculateAvgAge</b> to swap team data so that teams are ordered by descending average age of their players.
+      </div>
+    </div>
+    <div class="slide-number">Slide 8 / 9</div>
+  </section>
+  <!-- Slide 9 -->
+  <section class="slide">
+    <div>
+      <h2>removeTeam &amp; main()</h2>
+      <h3>Remove Team – removeTeam(int id)</h3>
+      <ul>
+        <li>Searches for the team by id and stores its name (teamName).</li>
+        <li>Deletes that team node from the teams list (handles head and non-head cases).</li>
+        <li>Then repeatedly scans the players list and removes every player whose teamName equals the deleted team.</li>
+        <li>This guarantees no players remain belonging to a removed team.</li>
+      </ul>
+      <h3>main() and Menu</h3>
+      <div class="code-block">
+LeagueSystem sys;
+<span class="cm">// initial sample data</span>
+sys.addTeam(101, <span class="st">"Ahly"</span>, <span class="st">"Elkhatib"</span>);
+sys.addTeam(102, <span class="st">"Zamalek"</span>, <span class="st">"Labib"</span>);
+
+<span class="cm">// do-while loop with menu choices 1..11 and 0 to exit</span>
+      </div>
+      <ul>
+        <li>The menu lets the user call all operations: add, display, search, update, delete, sorting, and statistics.[web:16]</li>
+        <li>The loop continues until the user enters 0 (Exit).</li>
+      </ul>
+    </div>
+    <div class="slide-number">Slide 9 / 9</div>
+  </section>
+</div>
+
+</body></html>
